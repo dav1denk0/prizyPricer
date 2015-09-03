@@ -1,0 +1,7 @@
+# Ignoring files from PrizyPricer project that shouldn't be uploaded to GitHub
+
+*.log
+.project
+.classpath
+.settings/
+target/
