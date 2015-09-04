@@ -4,9 +4,11 @@ import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.InvalidElementStateException;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class Page {
@@ -63,5 +65,10 @@ public class Page {
 			return element.getText();
 		else
 			throw new InvalidElementStateException("There was an error to retrieve the text from element");
+	}
+	
+	public void selectDropdownOptionByText(WebElement dropDown, String optionText) {
+		Select list = new Select(dropDown);
+		list.selectByValue(optionText);
 	}
 }
