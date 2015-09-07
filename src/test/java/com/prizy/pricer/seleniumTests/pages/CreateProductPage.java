@@ -8,6 +8,8 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import com.prizy.pricer.seleniumTests.pages.common.IndexPage;
+
 public class CreateProductPage extends IndexPage {
 
 	public static final String PAGE_PATH = "product/create";

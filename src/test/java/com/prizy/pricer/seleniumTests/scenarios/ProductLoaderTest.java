@@ -10,15 +10,15 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import com.prizy.pricer.seleniumTests.EnvironmentData;
-import com.prizy.pricer.seleniumTests.pages.IndexPage;
 import com.prizy.pricer.seleniumTests.pages.ProductLoaderPage;
-import com.prizy.pricer.seleniumTests.pages.ShowRegistryPage;
+import com.prizy.pricer.seleniumTests.pages.ViewProductRegistryPage;
+import com.prizy.pricer.seleniumTests.pages.common.IndexPage;
 
-public class TestProductLoader {
+public class ProductLoaderTest {
 
 	private IndexPage indexPage;
 	private ProductLoaderPage productLoaderPage;
-	private ShowRegistryPage showRegistryPage;
+	private ViewProductRegistryPage showRegistryPage;
 	
 	@BeforeClass
 	public void setEnvironment() {
@@ -27,7 +27,7 @@ public class TestProductLoader {
 		Integer timeout = EnvironmentData.TIMEOUT;
 		indexPage = new IndexPage(driver, timeout);
 		productLoaderPage = new ProductLoaderPage(driver, timeout);
-		showRegistryPage = new ShowRegistryPage(driver, timeout);
+		showRegistryPage = new ViewProductRegistryPage(driver, timeout);
 	}
 	
 	@Test

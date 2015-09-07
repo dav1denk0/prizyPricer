@@ -8,14 +8,14 @@ import org.testng.annotations.Test;
 
 import com.prizy.pricer.seleniumTests.EnvironmentData;
 import com.prizy.pricer.seleniumTests.pages.CreateProductPage;
-import com.prizy.pricer.seleniumTests.pages.IndexPage;
-import com.prizy.pricer.seleniumTests.pages.ProductViewerPage;
+import com.prizy.pricer.seleniumTests.pages.ViewProductPage;
+import com.prizy.pricer.seleniumTests.pages.common.IndexPage;
 
-public class TestCreateProducts {
+public class CreateProductsTest {
 	
 	private IndexPage indexPage;
 	private CreateProductPage createProductPage;
-	private ProductViewerPage productViewerPage;
+	private ViewProductPage productViewerPage;
 
 	@BeforeClass
 	public void setEnvironment() {
@@ -24,7 +24,7 @@ public class TestCreateProducts {
 		Integer timeout = EnvironmentData.TIMEOUT;
 		indexPage = new IndexPage(driver, timeout);
 		createProductPage = new CreateProductPage(driver, timeout);
-		productViewerPage = new ProductViewerPage(driver, timeout);
+		productViewerPage = new ViewProductPage(driver, timeout);
 	}
 	
 	@Test
@@ -36,7 +36,7 @@ public class TestCreateProducts {
 			createProduct(barCode, description);
 			Assert.assertFalse(createProductPage.isErrorDisplayedInPage(), 
 					"There was an error in the creation of the product");
-			String productMessageText = productViewerPage.getProductMessageText();
+			String productMessageText = productViewerPage.getMessageText();
 			Assert.assertTrue(productMessageText.contains("creado"),
 					"The message shown in the page should say that the product was created, but instead is: "
 					+ productMessageText);

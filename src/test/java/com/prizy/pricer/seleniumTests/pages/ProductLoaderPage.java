@@ -6,6 +6,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import com.prizy.pricer.seleniumTests.pages.common.IndexPage;
+
 public class ProductLoaderPage extends IndexPage {
 
 	public static final String PAGE_PATH = "registry/create";

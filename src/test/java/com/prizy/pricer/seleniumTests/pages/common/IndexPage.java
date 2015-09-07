@@ -1,10 +1,8 @@
-package com.prizy.pricer.seleniumTests.pages;
+package com.prizy.pricer.seleniumTests.pages.common;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-
-import com.prizy.pricer.seleniumTests.pages.common.Page;
 
 public class IndexPage extends Page {
 	
