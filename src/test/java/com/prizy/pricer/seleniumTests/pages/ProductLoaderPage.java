@@ -39,4 +39,9 @@ public class ProductLoaderPage extends IndexPage {
 		WebElement productNote = findElementBySelector(this.notesTextField);
 		sendKeysToWebElement(productNote, note);
 	}
+	
+	public void createPriceRecord() {
+		WebElement createRecord = findElementBySelector(this.createButton);
+		clickElement(createRecord);
+	}
 }

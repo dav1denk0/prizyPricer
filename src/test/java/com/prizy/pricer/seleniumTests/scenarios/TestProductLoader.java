@@ -38,7 +38,9 @@ public class TestProductLoader {
 		while(it.hasNext()) {
 			HashMap.Entry<String, String> entry = it.next();
 			String productSelection = "Bar Code: " + entry.getKey() + ", Description: " + entry.getValue();
-			loadProductPrice(productSelection);
+			for(int i=0; i<10; i++) {
+				loadProductPrice(productSelection);
+			}
 		}
 	}
 	
@@ -50,5 +52,6 @@ public class TestProductLoader {
 		productLoaderPage.setProductPrice(price);
 		String note = EnvironmentData.getRandomProductNote();
 		productLoaderPage.setProductNote(note);
+		productLoaderPage.createPriceRecord();
 	}
 }
