@@ -70,4 +70,11 @@ public class Page {
 		Select list = new Select(dropDown);
 		list.selectByValue(optionText);
 	}
+	
+	public String getElementAttributeByPropertyName(WebElement element, String property) {
+		if(element != null)
+			return element.getAttribute(property);
+		else
+			throw new InvalidElementStateException("There was an error to retrieve the atrtibute from the element");
+	}
 }

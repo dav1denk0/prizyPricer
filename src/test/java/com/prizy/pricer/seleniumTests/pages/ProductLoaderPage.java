@@ -46,4 +46,20 @@ public class ProductLoaderPage extends IndexPage {
 		WebElement createRecord = findElementBySelector(this.createButton);
 		clickElement(createRecord);
 	}
+	
+	public Boolean isStoreFieldRequired() {
+		WebElement productStore = findElementBySelector(this.storeTextField);
+		String requiredAttr = getElementAttributeByPropertyName(productStore, "required");
+		if(requiredAttr.equalsIgnoreCase("true"))
+			return Boolean.TRUE;
+		return Boolean.FALSE;
+	}
+	
+	public Boolean isPriceFieldRequired() {
+		WebElement productPrice = findElementBySelector(this.priceTextField);
+		String requiredAttr = getElementAttributeByPropertyName(productPrice, "required");
+		if(requiredAttr.equalsIgnoreCase("true"))
+			return Boolean.TRUE;
+		return Boolean.FALSE;
+	}
 }

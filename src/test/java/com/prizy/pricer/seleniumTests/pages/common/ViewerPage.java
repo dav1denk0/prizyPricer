@@ -1,6 +1,7 @@
 package com.prizy.pricer.seleniumTests.pages.common;
 
 import java.util.List;
+import java.util.Map;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
@@ -26,15 +27,17 @@ public class ViewerPage extends IndexPage{
 		}
 	}
 	
-	public Boolean validateCreatedRecordProperty(String propertyName, String propertyValue) {
+	public Boolean validateCreatedRecordProperty(Map<String, String> loaderValues) {
+		Map<String, String> values = loaderValues;
 		WebElement recordContainer = findElementBySelector(this.recordList);
 		List<WebElement> records = recordContainer.findElements(this.recordRows);
 		for(WebElement rec : records) {
 			String recordName = getTextFromElement(rec.findElement(By.cssSelector("property-label")));
 			String recordValue = getTextFromElement(rec.findElement(By.cssSelector("property-value")));
-			if(recordName.equalsIgnoreCase(propertyName) && recordValue.equalsIgnoreCase(propertyValue))
-				return Boolean.TRUE;
+			if(!values.containsKey(recordName))
+				if(!values.get(recordName).equalsIgnoreCase(recordValue))
+					return Boolean.FALSE;
 		}
-		return Boolean.FALSE;
+		return Boolean.TRUE;
 	}
 }

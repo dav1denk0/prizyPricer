@@ -5,8 +5,9 @@ import com.prizy.pricer.pojos.Price;
 
 public class Service {
 
+	// This shouldn't return null values but is just a dummy Service class
 	public Price getPrice(Integer id) {
-		return null;
+		return null; 
 	}
 	
 	public void saveOrUpdatePrice(Price price) {
@@ -17,6 +18,7 @@ public class Service {
 		
 	}
 	
+	// This shouldn't return null values but is just a dummy Service class
 	public Product getProduct(Integer product) {
 		return null;
 	}
