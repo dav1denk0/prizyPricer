@@ -2,16 +2,33 @@ package com.prizy.pricer.seleniumTests;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+
+import com.prizy.pricer.seleniumTests.domain.ProductStub;
 
 public class EnvironmentData {
 
 	public static final String BASE_URL = "http://tomcat.jcor.com.ar/prizy-pricer/";
 	public static final Integer TIMEOUT = new Integer(20);
-	public static HashMap<String, String> savedProducts = new HashMap<String, String>();
+	public static List<ProductStub> savedProducts = new ArrayList<ProductStub>();
+	private static WebDriver driver = new FirefoxDriver();
+	
+	public static WebDriver getEnvironment() {
+		return driver;
+	}
+	
+	public static void getBaseUrl() {
+		driver.get(EnvironmentData.BASE_URL);
+	}
+	
+	public static Integer getTimeout() {
+		return EnvironmentData.TIMEOUT;
+	}
 	
 	public static String generateProductBarCode() {
 		return UUID.randomUUID().toString().replaceAll("-", "");
@@ -39,11 +56,11 @@ public class EnvironmentData {
 		return descriptions.get(randomNumber);
 	}
 	
-	public static void setSavedProduct(String barCode, String description) {
-		savedProducts.put(barCode, description);
+	public static void setSavedProduct(ProductStub product) {
+		savedProducts.add(product);
 	}
 	
-	public static HashMap<String, String> getSavedProducts() {
+	public static List<ProductStub> getSavedProducts() {
 		return savedProducts;
 	}
 	

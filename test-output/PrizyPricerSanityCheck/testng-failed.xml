@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite verbose="10" name="Failed suite [PrizyPricerSanityCheck]">
+  <test name="productCreationAndPricingLoad(failed)">
+    <classes>
+      <class name="com.prizy.pricer.seleniumTests.scenarios.CreateProductsTest">
+        <methods>
+          <include name="setEnvironment"/>
+          <include name="createPrizyPricerProductWithoutBarCode"/>
+          <include name="createPrizyPricerProductWithoutDescription"/>
+          <include name="createPrizyPricerProducts"/>
+          <include name="beforeTestActions"/>
+          <include name="afterTestActions"/>
+        </methods>
+      </class> <!-- com.prizy.pricer.seleniumTests.scenarios.CreateProductsTest -->
+      <class name="com.prizy.pricer.seleniumTests.scenarios.ProductLoaderTest">
+        <methods>
+          <include name="beforeTestActions"/>
+          <include name="loadPricesForCreatedProducts"/>
+          <include name="setEnvironment"/>
+          <include name="loadPriceWithoutPriceField"/>
+          <include name="loadPriceWithoutStoreField"/>
+        </methods>
+      </class> <!-- com.prizy.pricer.seleniumTests.scenarios.ProductLoaderTest -->
+    </classes>
+  </test> <!-- productCreationAndPricingLoad(failed) -->
+</suite> <!-- Failed suite [PrizyPricerSanityCheck] -->

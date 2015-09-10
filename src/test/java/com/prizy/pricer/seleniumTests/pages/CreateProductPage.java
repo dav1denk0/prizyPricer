@@ -1,10 +1,6 @@
 package com.prizy.pricer.seleniumTests.pages;
 
-import java.util.List;
-
-import org.apache.bcel.verifier.exc.AssertionViolatedException;
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
@@ -16,7 +12,6 @@ public class CreateProductPage extends IndexPage {
 	private By barCodeTextField = By.id("barCode");
 	private By descriptionTextField = By.id("description");
 	private By createButton = By.id("create");
-	private By errorList = By.cssSelector(".errors > li");
 	
 	public CreateProductPage(WebDriver driver, Integer timeout) {
 		super(driver, timeout);
@@ -37,19 +32,19 @@ public class CreateProductPage extends IndexPage {
 		clickElement(createLink);
 	}
 	
-	public Boolean isErrorDisplayedInPage() {
-		try {
-			List<WebElement> errors = findAllElementsBySelector(this.errorList);
-			if(errors != null && errors.size() > 0) {
-				String pageErrorMessage = "";
-				for(WebElement error : errors) {
-					pageErrorMessage = "\n" + getTextFromElement(error);
-				}
-				throw new AssertionViolatedException(pageErrorMessage);
-			}
+	public Boolean isBarCodeFieldRequired() {
+		WebElement productStore = findElementBySelector(this.barCodeTextField);
+		String requiredAttr = getElementAttributeByPropertyName(productStore, "required");
+		if(requiredAttr.equalsIgnoreCase("true"))
 			return Boolean.TRUE;
-		}catch(NoSuchElementException e) {
-			return Boolean.FALSE;
-		}
+		return Boolean.FALSE;
+	}
+	
+	public Boolean isDescriptionFieldRequired() {
+		WebElement productStore = findElementBySelector(this.descriptionTextField);
+		String requiredAttr = getElementAttributeByPropertyName(productStore, "required");
+		if(requiredAttr.equalsIgnoreCase("true"))
+			return Boolean.TRUE;
+		return Boolean.FALSE;
 	}
 }

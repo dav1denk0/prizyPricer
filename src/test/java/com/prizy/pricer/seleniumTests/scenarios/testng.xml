@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="PrizyPricerSanityCheck" verbose="10">
+  <test name="productCreationTest" verbose="3" group-by-instances="true">
+    <classes>
+       <class name="com.prizy.pricer.seleniumTests.scenarios.CreateProductsTest"/>
+       <class name="com.prizy.pricer.seleniumTests.scenarios.ProductLoaderTest"/>
+    </classes>
+  </test>
+</suite>

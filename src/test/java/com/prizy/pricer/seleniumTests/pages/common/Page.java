@@ -21,19 +21,19 @@ public class Page {
 	}
 	
 	public WebElement findElementBySelector(By selector) {
-		WebElement element = (new WebDriverWait(driver, timeout)).
+		WebElement element = (new WebDriverWait(this.driver, this.timeout)).
 				until(ExpectedConditions.presenceOfElementLocated(selector));
 		return element;
 	}
 	
 	public List<WebElement> findAllElementsBySelector(By selector) {
-		List<WebElement> elements = (new WebDriverWait(driver, timeout)).
+		List<WebElement> elements = (new WebDriverWait(this.driver, this.timeout)).
 				until(ExpectedConditions.presenceOfAllElementsLocatedBy(selector));
 		return elements;
 	}
 	
 	public List<WebElement> findAllElementsInContainerBySelector(By container, By subElement) {
-		WebElement element = (new WebDriverWait(driver, timeout)).
+		WebElement element = (new WebDriverWait(this.driver, this.timeout)).
 				until(ExpectedConditions.presenceOfElementLocated(container));
 		List<WebElement> subElements = element.findElements(subElement);
 		return subElements;
@@ -47,7 +47,7 @@ public class Page {
 	}*/
 	
 	public void clickElement(WebElement element) {
-		new WebDriverWait(driver, timeout).
+		new WebDriverWait(this.driver, this.timeout).
 				until(ExpectedConditions.elementToBeClickable(element)).click();
 		
 	}
@@ -68,7 +68,7 @@ public class Page {
 	
 	public void selectDropdownOptionByText(WebElement dropDown, String optionText) {
 		Select list = new Select(dropDown);
-		list.selectByValue(optionText);
+		list.selectByVisibleText(optionText);
 	}
 	
 	public String getElementAttributeByPropertyName(WebElement element, String property) {
