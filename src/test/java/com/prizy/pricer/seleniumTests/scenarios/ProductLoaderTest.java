@@ -74,7 +74,7 @@ public class ProductLoaderTest {
 					String registryMessageText = viewProductRegistryPage.
 							getMessageText();
 					
-					Assert.assertTrue(registryMessageText.contains("creado"),
+					Assert.assertTrue(registryMessageText.contains("created"),
 							"The message shown in the page should say that "
 							+ "the product registry was created, but instead is: "
 							+ registryMessageText);
