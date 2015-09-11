@@ -46,7 +46,7 @@ public class CreateProductsTest {
 			String description = EnvironmentData.getRandomProductDescription();
 			createProduct(barCode, description);
 			String productMessageText = this.viewProductPage.getMessageText();
-			Assert.assertTrue(productMessageText.contains("creado"),
+			Assert.assertTrue(productMessageText.contains("created"),
 					"The message shown in the page should say "
 					+ "that the product was created, but instead is: "
 					+ productMessageText);
