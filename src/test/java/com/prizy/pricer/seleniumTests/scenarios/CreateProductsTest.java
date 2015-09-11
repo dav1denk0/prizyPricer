@@ -7,6 +7,7 @@ import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
+import org.testng.log4testng.Logger;
 
 import com.prizy.pricer.seleniumTests.EnvironmentData;
 import com.prizy.pricer.seleniumTests.domain.ProductStub;
@@ -16,6 +17,7 @@ import com.prizy.pricer.seleniumTests.pages.common.IndexPage;
 
 public class CreateProductsTest {
 	
+	public static Logger log = Logger.getLogger(CreateProductsTest.class);
 	private WebDriver driver;
 	private IndexPage indexPage;
 	private CreateProductPage createProductPage;
@@ -34,6 +36,7 @@ public class CreateProductsTest {
 	@BeforeMethod
 	public void beforeTestActions() {
 		this.indexPage.goToCreateProductPage();
+		log.debug("Navigating to Create Product Page...");
 	}
 	
 	@Test(priority = 1)
@@ -44,8 +47,10 @@ public class CreateProductsTest {
 			createProduct(barCode, description);
 			String productMessageText = this.viewProductPage.getMessageText();
 			Assert.assertTrue(productMessageText.contains("creado"),
-					"The message shown in the page should say that the product was created, but instead is: "
+					"The message shown in the page should say "
+					+ "that the product was created, but instead is: "
 					+ productMessageText);
+			log.debug("Product " + barCode + " validated");
 			ProductStub createdProduct = new ProductStub();
 			createdProduct.setBarCode(barCode);
 			createdProduct.setDescription(description);
@@ -56,27 +61,32 @@ public class CreateProductsTest {
 	
 	@Test(priority = 2)
 	public void createPrizyPricerProductWithoutBarCode() {
-		Assert.assertTrue(this.createProductPage.isBarCodeFieldRequired(), "Bar Code text field should be required");
+		Assert.assertTrue(this.createProductPage.isBarCodeFieldRequired(), 
+				"Bar Code text field should be required");
 	}
 	
 	@Test(priority = 3)
 	public void createPrizyPricerProductWithoutDescription() {
-		Assert.assertTrue(this.createProductPage.isDescriptionFieldRequired(), "Description text field should be required");
+		Assert.assertTrue(this.createProductPage.isDescriptionFieldRequired(), 
+				"Description text field should be required");
 	}
 	
 	@AfterMethod
 	public void afterTestActions() {
 		this.indexPage.goToHomePage();
+		log.debug("Navigating to Home Page...");
 	}
 	
 	@AfterTest
 	public void afterSuiteActions() {
 		this.driver.quit();
+		log.debug("Exiting from WebDriver...");
 	}
 	
 	private void createProduct(String barCode, String description) {
 		this.createProductPage.setTextInBarCodeField(barCode);
 		this.createProductPage.setTextInDescriptionField(description);
 		this.createProductPage.clickLinkCreateProduct();
+		log.debug("Product " + barCode + " successfully created");
 	}
 }

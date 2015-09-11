@@ -57,7 +57,8 @@ public class ProductStub {
 			total = total.add(price);
 			numberOfRecords = numberOfRecords.add(new BigDecimal(1));
 		}
-		this.avgPrice = total.divide(numberOfRecords).setScale(2, BigDecimal.ROUND_HALF_UP);
+		this.avgPrice = total.divide(numberOfRecords, 2, BigDecimal.ROUND_HALF_UP)
+				.stripTrailingZeros();
 	}
 	
 	public BigDecimal getLowestPrice() {
@@ -97,9 +98,11 @@ public class ProductStub {
 			total = total.add(price);
 			numberOfRecords = numberOfRecords.add(new BigDecimal(1));
 		}
-		BigDecimal average = total.divide(numberOfRecords).setScale(2, BigDecimal.ROUND_HALF_UP);
-		BigDecimal percentage = average.multiply(new BigDecimal(0.20)).setScale(2, BigDecimal.ROUND_HALF_UP);
-		this.idealPrice = average.add(percentage).setScale(2, BigDecimal.ROUND_HALF_UP);
+		BigDecimal average = total.divide(numberOfRecords, 2, BigDecimal.ROUND_HALF_UP);
+		BigDecimal percentage = average.multiply(new BigDecimal(0.20)).
+				setScale(2, BigDecimal.ROUND_HALF_UP);
+		this.idealPrice = average.add(percentage).
+				setScale(2, BigDecimal.ROUND_HALF_UP).stripTrailingZeros();
 	}
 	
 	public List<BigDecimal> getPriceValues() {

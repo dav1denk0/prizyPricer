@@ -1,6 +1,5 @@
 package com.prizy.pricer.seleniumTests.pages;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -36,21 +35,20 @@ public class ViewProductPage extends IndexPage {
 		}
 	}
 	
-	public List<String> validateCreatedProduct(Map<String, String> loaderValues) {
-		List<String> errors = new ArrayList<String>();
+	public String validateCreatedProduct(Map<String, String> loaderValues) {
 		Map<String, String> values = loaderValues;
 		WebElement recordContainer = findElementBySelector(this.recordList);
 		List<WebElement> records = recordContainer.findElements(this.recordRows);
-		records.remove(records.size() - 1);
 		for(WebElement rec : records) {
-			String recordName = getTextFromElement(rec.findElement(By.cssSelector(".property-label")));
-			String recordValue = getTextFromElement(rec.findElement(By.cssSelector(".property-value")));
-			if(!values.containsKey(recordName) || !values.get(recordName).equalsIgnoreCase(recordValue))
-				errors.add("The property " + recordName + " with the value " + recordValue + " was not found");
+			String recordName = getTextFromElement(rec.findElement
+					(By.cssSelector(".property-label")));
+			String recordValue = getTextFromElement(rec.findElement
+					(By.cssSelector(".property-value")));
+			if(!values.containsKey(recordName) || !values.get(recordName)
+					.equalsIgnoreCase(recordValue.replace(",", ".")))
+				return "The property " + recordName + " with the value " 
+					+ recordValue + " was not found in the page";
 		}
-		if(!errors.isEmpty())
-			return errors;
-		else
-			return null;
+		return "";
 	}
 }

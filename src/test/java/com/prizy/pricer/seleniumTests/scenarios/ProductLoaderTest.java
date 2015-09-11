@@ -12,6 +12,7 @@ import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
+import org.testng.log4testng.Logger;
 
 import com.prizy.pricer.seleniumTests.EnvironmentData;
 import com.prizy.pricer.seleniumTests.domain.PriceStub;
@@ -24,6 +25,7 @@ import com.prizy.pricer.seleniumTests.pages.common.IndexPage;
 
 public class ProductLoaderTest {
 
+	public static Logger log = Logger.getLogger(ProductLoaderTest.class);
 	private WebDriver driver;
 	private IndexPage indexPage;
 	private ProductLoaderPage productLoaderPage;
@@ -36,16 +38,19 @@ public class ProductLoaderTest {
 	public void setEnvironment() {
 		this.driver = EnvironmentData.getEnvironment();
 		EnvironmentData.getBaseUrl();
+		log.debug("Navigating to Prizy Pricer page...");
 		Integer timeout = EnvironmentData.getTimeout();
 		this.indexPage = new IndexPage(this.driver, timeout);
 		this.productLoaderPage = new ProductLoaderPage(this.driver, timeout);
 		this.viewProductRegistryPage = new ViewProductRegistryPage(this.driver, timeout);
 		this.productListPage = new ProductListPage(driver, timeout);
+		this.viewProductPage = new ViewProductPage(driver, timeout);
 	}
 	
 	@BeforeMethod
 	public void beforeTestActions() {
 		this.indexPage.goToProductLoaderPage();
+		log.debug("Navigating to Product Loader Page...");
 	}
 	
 	@Test(priority = 1)
@@ -53,20 +58,32 @@ public class ProductLoaderTest {
 		List<ProductStub> loadedProducts = EnvironmentData.getSavedProducts();
 		if(loadedProducts != null && loadedProducts.size() > 0) {
 			for(ProductStub product : loadedProducts) {
-				String productSelection = "Bar code: " + product.getBarCode() + ", Description: " + product.getDescription();
+				String productSelection = "Bar code: " + product.getBarCode() + 
+						", Description: " + product.getDescription();
 				for(int i=0; i<10; i++) {
 					this.loaderValues = new HashMap<String, String>();
 					this.loaderValues.put("Product", productSelection);
+					
 					String storeName = EnvironmentData.getRandomStore();
-					BigDecimal productPrice = EnvironmentData.getRandomPriceForProduct();
-					String productNote = EnvironmentData.getRandomProductNote();
-					loadProductPrice(productSelection, storeName, productPrice, productNote);
-					String registryMessageText = viewProductRegistryPage.getMessageText();
+					BigDecimal productPrice = EnvironmentData.
+							getRandomPriceForProduct();
+					String productNote = EnvironmentData.
+							getRandomProductNote();
+					loadProductPrice(productSelection, storeName, 
+							productPrice, productNote);
+					String registryMessageText = viewProductRegistryPage.
+							getMessageText();
+					
 					Assert.assertTrue(registryMessageText.contains("creado"),
-							"The message shown in the page should say that the product registry was created, but instead is: "
+							"The message shown in the page should say that "
+							+ "the product registry was created, but instead is: "
 							+ registryMessageText);
-					List<String> errors = viewProductRegistryPage.validateCreatedPriceRecord(this.loaderValues);
-					Assert.assertNull(errors, "Assertion Error " + errors.get(0));
+					
+					String errors = viewProductRegistryPage.
+							validateCreatedPriceRecord(this.loaderValues);
+					Assert.assertEquals(errors, "", "Assertion error when comparing loaded prices: " + errors);
+					log.debug("Price for product " + product.getBarCode() +  "was successfully validated...");
+					
 					loaderValues = null;
 					PriceStub createdPrice = new PriceStub();
 					createdPrice.setStore(storeName);
@@ -77,28 +94,35 @@ public class ProductLoaderTest {
 					this.viewProductRegistryPage.clickCreateNewRegistry();
 				}
 			}
-		}else
-			Assert.assertTrue(false, "There's no generated products and it's impossible to load it's prices");
+		}else {
+			log.error("Error in the productLoaded collection when loading prices...");
+			Assert.assertTrue(false, "There's no generated products and "
+					+ "it's impossible to load it's prices");
+		}
 	}
 	
 	@Test(priority = 2)
 	public void loadPriceWithoutStoreField() {
-		Assert.assertTrue(productLoaderPage.isStoreFieldRequired(), "Store text field should be required");
+		Assert.assertTrue(productLoaderPage.isStoreFieldRequired(), 
+				"Store text field should be required");
 	}
 	
 	@Test(priority = 3)
 	public void loadPriceWithoutPriceField() {
-		Assert.assertTrue(productLoaderPage.isPriceFieldRequired(), "Price text field should be required");
+		Assert.assertTrue(productLoaderPage.isPriceFieldRequired(), 
+				"Price text field should be required");
 	}
 	
 	@Test(priority = 4)
 	public void verifyProductDetailsInList() {
 		this.indexPage.goToHomePage();
+		
 		List<ProductStub> savedProducts = EnvironmentData.getSavedProducts();
 		if(savedProducts != null && savedProducts.size() > 0) {
 			for(ProductStub product : savedProducts) {
 				this.indexPage.findProduct(product.getBarCode());
 				this.productListPage.accessToProductDetails(product.getBarCode());
+				
 				this.loaderValues = new HashMap<String, String>();
 				this.loaderValues.put("Bar Code", product.getBarCode());
 				this.loaderValues.put("Description", product.getDescription());
@@ -108,27 +132,39 @@ public class ProductLoaderTest {
 				product.setLowestPrice();
 				String lowestPrice = product.getLowestPrice().toString();
 				this.loaderValues.put("Lowest Price", lowestPrice);
+				product.setHighestPrice();
+				String highestPrice = product.getHighestPrice().toString();
+				this.loaderValues.put("Highest Price", highestPrice);
 				product.setIdealPrice();
 				String idealPrice = product.getIdealPrice().toString();
 				this.loaderValues.put(("Ideal Price"), idealPrice);
-				String numberOfPrices = Integer.toString(product.getPrices().size());
+				String numberOfPrices = Integer.toString(product.
+						getPrices().size());
 				this.loaderValues.put("Number of Prices", numberOfPrices);
-				List<String> errors = viewProductPage.validateCreatedProduct(this.loaderValues);
-				Assert.assertNull(errors, "Assertion Error " + errors.get(0));
+				String errors = this.viewProductPage.validateCreatedProduct(this.loaderValues);
+				
+				Assert.assertEquals(errors, "", "Assertion Error when comparing "
+						+ "price's attributes: " + errors);
+				log.debug("Product " + product.getBarCode() +  "verified in list...");
 				this.loaderValues = null;
 			}
-		}else
-			Assert.assertTrue(false, "There's no product saved to check in the products list");
+		}else {
+			log.error("Error in the productLoaded collection when validating prices...");
+			Assert.assertTrue(false, "There's no product saved to "
+					+ "check in the products list");
+		}
 	}
 	
 	@AfterMethod
 	public void afterMethodActions() {
 		indexPage.goToHomePage();
+		log.debug("Navigating to Home Page...");
 	}
 	
 	@AfterTest
 	public void afterTestActions() {
 		this.driver.quit();
+		log.debug("Exiting from WebDriver...");
 	}
 	
 	private void loadProductPrice(String productSelection, String storeName, 
@@ -141,6 +177,7 @@ public class ProductLoaderTest {
 		this.productLoaderPage.setProductNote(productNote);
 		this.loaderValues.put("Notes", productNote);
 		this.productLoaderPage.createPriceRecord();
+		log.debug("Price created for product " + productSelection);
 		
 	}
 }

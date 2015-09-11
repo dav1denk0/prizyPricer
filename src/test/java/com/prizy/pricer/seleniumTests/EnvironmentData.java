@@ -65,10 +65,12 @@ public class EnvironmentData {
 	}
 	
 	public static BigDecimal getRandomPriceForProduct() {
-		BigDecimal minRange = new BigDecimal(0);
+		BigDecimal minRange = new BigDecimal(1);
 		BigDecimal maxRange = new BigDecimal(50);
-		BigDecimal randomPrice = minRange.add(new BigDecimal(Math.random()).multiply(maxRange.subtract(minRange)));
-		return randomPrice.setScale(2, BigDecimal.ROUND_HALF_UP);
+		BigDecimal randomPrice = minRange.add(new BigDecimal
+				(Math.random()).multiply(maxRange.subtract(minRange)));
+		// This should be an scale of 2 but due the page bug with decimals I decided to use exact prices without decimals
+		return randomPrice.setScale(0, BigDecimal.ROUND_HALF_UP);
 	}
 	
 	private static List<String> setStoreNames() {
